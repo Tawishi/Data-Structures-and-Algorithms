@@ -48,4 +48,12 @@ int main() {
 
     cout<<"Postorder tree traversal"<<endl;
     printPostorder(root);
+
+    cout<<"Preorder tree traversal"<<endl;
+    printPreorder(root);
+
+    cout<<"Inorder tree traversal"<<endl;
+    printInorder(root);
+
+    return 0;
 }
