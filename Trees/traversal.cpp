@@ -18,8 +18,25 @@ void printPostorder(node *node) {
     }
     printPostorder(node->left);
     printPostorder(node->right);
-
     cout<< node->data <<" ";
+}
+
+void printPreorder(node *node) {
+    if(node == NULL)
+        return;
+    
+    cout<< node->data <<" ";
+    printPreorder(node->left);
+    printPreorder(node->right);
+}
+
+void printInorder(node * node) {
+    if(node == NULL)
+        return;
+    
+    printInorder(node->left);
+    cout<<node->data<<" ";
+    printInorder(node->right);
 }
 
 int main() {
