@@ -1,3 +1,5 @@
+// TIME COMPLEXITY = O(n)
+// AUXILIARY SPACE = O(n) , O(1):NOT consider stack size for function calls
 #include<iostream>
 using namespace std;
 class node  { 
@@ -46,13 +48,13 @@ int main() {
     root->left->left = new node(4);
     root->left->right = new node(5);
 
-    cout<<"Postorder tree traversal"<<endl;
+    cout<<"\nPostorder tree traversal : ";
     printPostorder(root);
 
-    cout<<"Preorder tree traversal"<<endl;
+    cout<<"\nPreorder tree traversal : ";
     printPreorder(root);
 
-    cout<<"Inorder tree traversal"<<endl;
+    cout<<"\nInorder tree traversal : ";
     printInorder(root);
 
     return 0;
