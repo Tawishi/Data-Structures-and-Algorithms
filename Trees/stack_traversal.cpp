@@ -45,6 +45,49 @@ void preorder(node * root) {
     }
 }
 
+void postorder(node * root) {
+    if(root == NULL)
+        return;
+    stack<node*> s1,s2;
+    node * current = root;
+    s1.push(current);
+
+    //entering data from 
+    while(s1.empty() == false) {
+        current = s1.top();
+        s2.push(current);
+        s1.pop();
+        if(current->left)
+            s1.push(current->left);
+        if(current->right)
+            s1.push(current->right);
+    }
+
+    while (!s2.empty()) { 
+        current = s2.top(); 
+        s2.pop(); 
+        cout << current->data << " "; 
+    }
+}
+
+
+//wrong because we need the reverse of this: preorder traversal but with right before left
+
+// void postorder(node * root) {
+//     stack<node*> s;
+//     node * current = root;
+//     s.push(current);
+//     while(s.empty() == false) {
+//         current = s.top();
+//         cout<<current->data<<" ";
+//         s.pop();
+//         if(current->left)
+//             s.push(current->left);
+//         if(current->right)
+//             s.push(current->right);
+//     }
+// }
+
 int main() {
     node * root = new node(1);
     root->left = new node(2);
@@ -54,4 +97,6 @@ int main() {
     inorder(root);
     cout<<endl;
     preorder(root);
+    cout<<endl;
+    postorder(root);
 }
