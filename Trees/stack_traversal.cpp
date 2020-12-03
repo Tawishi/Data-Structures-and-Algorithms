@@ -30,6 +30,9 @@ void inorder(node * root) {
     }
 }
 
+//Time Complexity: O(N)
+//Auxiliary Space: O(N), 
+//where N is the total number of nodes in the tree.
 void preorder(node * root) {
     stack<node*> s;
     node * current = root;
@@ -45,9 +48,40 @@ void preorder(node * root) {
     }
 }
 
+
+//Time Complexity: O(N)
+//Auxiliary Space: O(H), 
+//where H is the height of the tree.
+void preorder2(node* root) {
+    if(root == NULL)
+        return;
+
+    stack<node*> s;
+    node * current = root;
+    //s.push(current);
+
+    while(s.empty() == false || current != NULL) {
+        while(current != NULL) {
+            cout<<current->data<<" ";
+            if(current->right)
+                s.push(current->right);
+            
+            //cout<<current->left<<" ";
+            current = current->left;
+    }
+    if(s.empty() == false) {
+        current = s.top();
+        s.pop();
+        //cout<<current->data<<" ";
+        }
+    }
+}
+
+
 void postorder(node * root) {
     if(root == NULL)
         return;
+
     stack<node*> s1,s2;
     node * current = root;
     s1.push(current);
@@ -97,6 +131,8 @@ int main() {
     inorder(root);
     cout<<endl;
     preorder(root);
+    cout<<endl;
+    preorder2(root);
     cout<<endl;
     postorder(root);
 }
