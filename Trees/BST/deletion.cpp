@@ -20,6 +20,8 @@ BST * delete_node(BST * root, int key) {
     if(root==NULL)
         return root;
 
+
+    //find the node to be deleted
     if(key < root->data) {
         root->left=delete_node(root->left, key);
         return root;
@@ -30,6 +32,10 @@ BST * delete_node(BST * root, int key) {
         return root;
     }
 
+
+    //identify the type of deletion, based on no. of children
+
+    //1 child
     if(root->left == NULL) {
         BST * temp = root->right;
         delete root;
@@ -42,24 +48,29 @@ BST * delete_node(BST * root, int key) {
         return temp;
     }
 
+    //2 children
     else {
         BST * parent = root;
         BST * successor = root->right;
+
+        //find key to replace key to be deleted
         while(successor->left != NULL) {
             parent = successor;
             successor = successor->left;
         }
     
+    //if there is a successor
     if(parent != root) 
         parent->left = successor->right;
+    //if no successor
     else 
         parent->right = successor->right;
 
+    //exchanging keys
     root->data = successor->data;
 
     delete successor;
     return root;
-    
     }
     
 }
