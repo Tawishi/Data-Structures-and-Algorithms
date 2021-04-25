@@ -19,7 +19,7 @@ int findTotalTime(vector<int> values) {
 }
 
 void findAverageTime(vector<int> burst_time) {
-	float average_waiting_time =  findTotalTime(findTotalTime(findWaitingTime(burst_time)))/burst_time.size();
+	float average_waiting_time =  findTotalTime(findWaitingTime(burst_time))/burst_time.size();
 	cout << "Processes  "<< " Burst time  "
          << " Waiting time  \n";
 	cout<<"Average waiting time = "<<average_waiting_time<<"\n";
