@@ -3,12 +3,12 @@ using namespace std;
 
 vector<int> findWaitingTime(vector<int> burst_time) {
 	cout<<"finding waiting times\n";
-	int size = burst_time.size();
-	cout<<size<<"\n";
+	cout<<burst_time.size()<<"\n";
 	vector<int> waiting_time;
 	cout<<"going for sum\n";
 	waiting_time[0] = 0;
-	for(int i=1;i<size;i++) {
+	cout<<"going for sum\n";
+	for(int i=1;i<burst_time.size();i++) {
 		cout<<"going for sum\n";
 		waiting_time[i] = waiting_time[i-1] + burst_time[i-1];
 	}
