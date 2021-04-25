@@ -3,15 +3,15 @@ using namespace std;
 
 vector<int> findWaitingTime(vector<int> burst_time) {
 	vector<int> waiting_time (burst_time.size(),0);
-	for(int i=1;i<burst_time.size();i++) {
+	for(int i=1;i<waiting_time.size();i++) {
 		waiting_time[i] = waiting_time[i-1] + burst_time[i-1];
 	}
 	return waiting_time;
 }
 
 vector<int> findTurnAroundTime(vector<int> burst_time, vector<int> waiting_time) {
-	vector<int> turn_around_time;
-	for(int i=0;i<burst_time.size();i++) {
+	vector<int> turn_around_time (burst_time.size(),0);
+	for(int i=0;i<turn_around.size();i++) {
 		turn_around_time[i] = burst_time[i] + waiting_time[i];
 	}
 	return turn_around_time;
@@ -27,11 +27,12 @@ int findTotalTime(vector<int> values) {
 void findAverageTime(vector<int> burst_time) {
         vector<int> waiting_time_values = findWaitingTime(burst_time);
 	int totalWaitingTime = findTotalTime(waiting_time_values);
-	float average_waiting_time = float(totalWaitingTime)/float(burst_time.size());
+	float average_waiting_time = float(totalWaitingTime)/float(waiting_time_values.size());
 
 	vector<int> turn_around_time_values = findTurnAroundTime(burst_time,waiting_time_values);
 	int totalTurnAroundTime = findTotalTime(turn_around_time_values);
-	float average_turn_around_time = float(totalTurnAroundTime)/float(burst_time.size());
+	float average_turn_around_time = float(totalTurnAroundTime)/float(turn_around_time_values.size());
+
 	cout << "Processes  "<< " Burst time  "
          << " Waiting time\t\t"<<"Turn Around Time \n";
 	for(int i=0;i<burst_time.size();i++) {
