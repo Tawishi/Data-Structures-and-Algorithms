@@ -29,15 +29,14 @@ void findAverageTime(vector<int> burst_time) {
 
 int main() {
 	vector<int> burst_time;
-	int i=0, time;
-	char choice='y';
-	while(choice=='y' || choice=='Y') {
+	int i=0, time, n;
+        cout<<"Enter the number of processes : ";
+        cin>>n;
+	while(n--) {
 		cout<<"Enter process CPU burst time (milliseconds): ";
 		cin>>time;
 		burst_time.push_back(time);
-		cout<<"\nMore processes (y/n)?"<<"\t";
-		cin>>choice;
 	}
-        findAverageTime(burst_time);
+    findAverageTime(burst_time);
 	return 0;
 }
