@@ -11,7 +11,7 @@ vector<int> findWaitingTime(vector<int> burst_time) {
 
 vector<int> findTurnAroundTime(vector<int> burst_time, vector<int> waiting_time) {
 	vector<int> turn_around_time (burst_time.size(),0);
-	for(int i=0;i<turn_around.size();i++) {
+	for(int i=0;i<turn_around_time.size();i++) {
 		turn_around_time[i] = burst_time[i] + waiting_time[i];
 	}
 	return turn_around_time;
