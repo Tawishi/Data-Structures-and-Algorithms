@@ -14,11 +14,11 @@ vector<float> findWaitingTime(vector<Process> processes) {
 	bool ongoing_process = false; 
 
 	for(int i=0;i<N;i++)
-		remaining_time[i] = processes[i].burst_time;
+	remaining_time[i] = processes[i].burst_time;
 	
 	while(completed != N) {
 		for(int i=0;i<N;i++) {
-			if(ongoing_process && (processes[i].arrival_time <= time) && (processes[i].burst_time<current_min) && (processes[i].burst_time>0)) {
+			if((processes[i].arrival_time <= time) && (processes[i].burst_time < current_min)) {
 				current_min = processes[i].burst_time;
 				shortest = i;
 				ongoing_process = true;
@@ -29,7 +29,6 @@ vector<float> findWaitingTime(vector<Process> processes) {
 			time++;
 			continue;
 		}
-
 		remaining_time[shortest]--;
 		// current_min = remaining_time[shortest];
 
@@ -42,7 +41,6 @@ vector<float> findWaitingTime(vector<Process> processes) {
 			finish_time = time+1;
 			ongoing_process = false;
 
-			// waiting_time[shortest] = finish_time - processes[shortest].burst_time - processes[shortest].arrival_time;
 			waiting_time[shortest] = finish_time - processes[shortest].burst_time - processes[shortest].arrival_time;
 
 			if(waiting_time[shortest] < 0 )
