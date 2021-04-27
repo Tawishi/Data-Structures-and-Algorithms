@@ -30,11 +30,11 @@ vector<float> findWaitingTime(vector<Process> processes) {
 			continue;
 		}
 		remaining_time[shortest]--;
-		// current_min = remaining_time[shortest];
+		current_min = remaining_time[shortest];
 
-		// if(current_min==0) {
-		// 	current_min = INT_MAX;
-		// }
+		if(current_min==0) {
+			current_min = INT_MAX;
+		}
 
 		if(remaining_time[shortest] == 0) {
 			completed++;
