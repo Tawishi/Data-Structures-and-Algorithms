@@ -14,42 +14,31 @@ vector<float> findWaitingTime(vector<Process> processes) {
 	bool ongoing_process = false; 
 
 	for(int i=0;i<N;i++)
-	remaining_time[i] = processes[i].burst_time;
+		remaining_time[i] = processes[i].burst_time;
 	
 	while(completed != N) {
+		cout<<"\nTime = "<<time<<"\n";
 		for(int i=0;i<N;i++) {
-			if((processes[i].arrival_time <= time) && (processes[i].burst_time < current_min)) {
+			if((processes[i].arrival_time <= time) && (processes[i].burst_time<current_min) && (processes[i].burst_time>0) && remaining_time[i] > 0) {
 				current_min = processes[i].burst_time;
 				shortest = i;
 				ongoing_process = true;
 			}
 		}
 
-		if(ongoing_process != true) {
-			time++;
-			continue;
-		}
-		remaining_time[shortest]--;
-		current_min = remaining_time[shortest];
+		completed++;
+		remaining_time[shortest] = 0;
 
-		if(current_min==0) {
-			current_min = INT_MAX;
-		}
+		waiting_time[shortest] = time - processes[shortest].arrival_time;
+		cout<<"\nWaiting time["<<shortest<<"] = "<<waiting_time[shortest]<<"\n";
+		
+		time = time + processes[shortest].burst_time;
+		ongoing_process = false;
+		current_min = INT_MAX;
 
-		if(remaining_time[shortest] == 0) {
-			completed++;
-			finish_time = time+1;
-			ongoing_process = false;
-
-			waiting_time[shortest] = finish_time - processes[shortest].burst_time - processes[shortest].arrival_time;
-
-			if(waiting_time[shortest] < 0 )
-				waiting_time[shortest] = 0;
-
-		}
-		time++;
+		if(waiting_time[shortest] < 0 )
+			waiting_time[shortest] = 0;
 	}
-
 	return waiting_time;
 }
 
