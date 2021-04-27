@@ -38,8 +38,8 @@ void findAverageTime(vector<float> arrival_time, vector<float> burst_time) {
 	for(int i=0;i<burst_time.size();i++) {
 		cout<<i+1<<"\t\t"<<arrival_time[i]<<"\t\t"<<burst_time[i]<<"\t\t"<<waiting_time_values[i]<<"\t\t"<<turn_around_time_values[i]<<"\n";
 	}
-	cout<<"Average waiting time = "<<average_waiting_time<<"\n";
-	cout<<"Average turn-around time = "<<average_turn_around_time<<"\n";
+	cout<<"Average waiting time = "<<average_waiting_time<<" ms\n";
+	cout<<"Average turn-around time = "<<average_turn_around_time<<" ms\n";
 }
 
 int main() {
