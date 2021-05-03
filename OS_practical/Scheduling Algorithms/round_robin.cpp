@@ -1,34 +1,36 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#define QUANTUM 2
+#define QUANTA 2
 
 class Process {
 	public:
-	float burst_time;
-	// float arrival_time;
-	float id;
+	int burst_time;
+	int arrival_time;
+	int id;
 };
 
-vector<float> findWaitingTime(vector<Process> processes) {
+vector<int> findWaitingTime(vector<Process> processes, int quanta) {
 	int N = processes.size();
-    vector<float> waiting_time (N,0);
+    vector<int> waiting_time (N,0);
     int time=0, remaining_time[N], completed=0;
     for(int i=0;i<N;i++)
         remaining_time[i] = processes[i].burst_time;
 	
     while(completed !=N) {
         for(int i=0;i<N;i++) {
-            if(remaining_time[i] > 0) {
-                if(remaining_time[i] > QUANTUM) {
-                    time += QUANTUM;
-                    remaining_time[i] -= QUANTUM;
-                }
-                else {
-                    time += remaining_time[i];
-                    waiting_time[i] = time - processes[i].burst_time;
-                    remaining_time[i] = 0;
-                    completed++;
+            if(processes[i].arrival_time <= time) {
+                if(remaining_time[i] > 0) {
+                    if(remaining_time[i] > quanta) {
+                        time += quanta;
+                        remaining_time[i] -= quanta;
+                    }
+                    else {
+                        time += remaining_time[i];
+                        waiting_time[i] = time - processes[i].arrival_time - processes[i].burst_time;
+                        remaining_time[i] = 0;
+                        completed++;
+                    }
                 }
             }
 	    }
@@ -36,61 +38,58 @@ vector<float> findWaitingTime(vector<Process> processes) {
 	return waiting_time;
 }
 
-vector<float> findTurnAroundTime(vector<Process> processes, vector<float> waiting_time) {
-	vector<float> turn_around_time (processes.size(),0);
+vector<int> findTurnAroundTime(vector<Process> processes, vector<int> waiting_time) {
+	vector<int> turn_around_time (processes.size(),0);
 	for(int i=0;i<turn_around_time.size();i++) {
 		turn_around_time[i] = processes[i].burst_time + waiting_time[i];
 	}
 	return turn_around_time;
 }
 
-float findTotalTime(vector<float> values) {
-	float sum=0;
+int findTotalTime(vector<int> values) {
+	int sum=0;
 	for(int i=0;i<values.size();i++)
 		sum += values[i];
 	return sum;
 }
 
-void findAverageTime(vector<Process> processes) {
-    vector<float> waiting_time_values = findWaitingTime(processes);
-	float totalWaitingTime = findTotalTime(waiting_time_values);
-	float average_waiting_time = totalWaitingTime/waiting_time_values.size();
+void findAverageTime(vector<Process> processes, int quanta) {
+    vector<int> waiting_time_values = findWaitingTime(processes, quanta);
+	int totalWaitingTime = findTotalTime(waiting_time_values);
+	float average_waiting_time = float(totalWaitingTime)/float(waiting_time_values.size());
 
-	vector<float> turn_around_time_values = findTurnAroundTime(processes, waiting_time_values);
-	float totalTurnAroundTime = findTotalTime(turn_around_time_values);
-	float average_turn_around_time = totalTurnAroundTime/turn_around_time_values.size();
+	vector<int> turn_around_time_values = findTurnAroundTime(processes, waiting_time_values);
+	int totalTurnAroundTime = findTotalTime(turn_around_time_values);
+	float average_turn_around_time = float(totalTurnAroundTime)/float(turn_around_time_values.size());
 
-	// cout << "Processes  "<<"Arrival time " <<" Burst time  "
-    //      << "\tWaiting time\t"<<"Turn Around Time \n";
-    
-	cout << "Processes  "<<" Burst time  "
+	cout << "Processes  "<<"Arrival time " <<" Burst time  "
          << "\tWaiting time\t"<<"Turn Around Time \n";
+    
 	for(int i=0;i<processes.size();i++) {
-		// cout<<processes[i].id<<"\t\t"<<processes[i].arrival_time<<"\t\t"<<processes[i].burst_time<<"\t\t"<<waiting_time_values[i]<<"\t\t"<<turn_around_time_values[i]<<"\n";
-        cout<<processes[i].id<<"\t\t"<<processes[i].burst_time<<"\t\t"<<waiting_time_values[i]<<"\t\t"<<turn_around_time_values[i]<<"\n";
+		cout<<processes[i].id<<"\t\t"<<processes[i].arrival_time<<"\t\t"<<processes[i].burst_time<<"\t\t"<<waiting_time_values[i]<<"\t\t"<<turn_around_time_values[i]<<"\n";
 	}
 	cout<<"Average waiting time = "<<average_waiting_time<<"\n";
 	cout<<"Average turn-around time = "<<average_turn_around_time<<"\n";
 }
 
 int main() {
-	int n,i=0;
-	float time;
-    //  arrival_time_input;
+	int n, i=0, time, arrival_time_input, quanta;
+    cout<<"Enter the time quanta: ";
+    cin>>quanta;
     cout<<"Enter the number of processes : ";
     cin>>n;
-	vector<Process> processes (n, {0,0});
+	vector<Process> processes (n, {0,0,0});
 	while(n--) {
 		processes[i].id = i+1;
 		cout<<"Process "<<i+1<<"\n";
-		// cout<<"Enter arrival time: ";
-		// cin>>arrival_time_input;
-		// processes[i].arrival_time = arrival_time_input;
+		cout<<"Enter arrival time: ";
+		cin>>arrival_time_input;
+		processes[i].arrival_time = arrival_time_input;
 		cout<<"Enter process CPU burst time (milliseconds): ";
 		cin>>time;
 		processes[i].burst_time = time;
 		i++;
 	}
-    findAverageTime(processes);
+    findAverageTime(processes,quanta);
 	return 0;
 }
