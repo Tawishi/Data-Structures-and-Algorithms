@@ -77,8 +77,6 @@ int main() {
 		i++;
 	}
 	sort_processes(processes);
-	// for( auto k=0;k<processes.size();k++)
-	// 	cout<<processes[k].id;
     findAverageTime(processes);
 	return 0;
 }

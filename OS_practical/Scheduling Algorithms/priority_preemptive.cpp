@@ -9,26 +9,48 @@ class Process {
     int priority;
 };
 
-bool less_than(Process p1, Process p2) {
-    if(p1.arrival_time == p2.arrival_time)
-        return p1.priority < p2.priority;
-    else
-        return p1.arrival_time < p2.arrival_time;
-}
-
 vector<float> findWaitingTime(vector<Process> processes) {
     int N = processes.size();
 	vector<float> waiting_time (N,0);
-	int time = processes[0].burst_time, current_priority=INT_MAX;
-    waiting_time[0] = 0;
-		for(int i=1;i<N;i++) {
-                waiting_time[i] = time - processes[i].arrival_time;
-                
-                if(waiting_time[i] < 0 )
-                    waiting_time[i] = 0;
 
-                time = time + processes[i-1].burst_time;
-    }
+	int remaining_time[N], time=0, completed=0, critical=0, current_priority=INT_MAX, finish_time=0;
+	bool ongoing_process = false; 
+
+	for(int i=0;i<N;i++)
+		remaining_time[i] = processes[i].burst_time;
+	
+	while(completed != N) {
+		for(int i=0;i<N;i++) {
+			if((processes[i].arrival_time <= time) && (processes[i].priority<current_priority) && (remaining_time[i]>0)) {
+				current_priority = processes[i].priority;
+				critical = i;
+				ongoing_process = true;
+			}
+		}
+
+		if(ongoing_process != true) {
+			time++;
+			continue;
+		}
+
+		remaining_time[critical]--;
+
+		if(remaining_time[critical] == 0) {
+			completed++;
+			finish_time = time+1;
+			ongoing_process = false;
+
+			waiting_time[critical] = finish_time - processes[critical].burst_time - processes[critical].arrival_time;
+
+			current_priority = INT_MAX;
+
+			if(waiting_time[critical] < 0 )
+				waiting_time[critical] = 0;
+
+		}
+		time++;
+	}
+
     return waiting_time;
 }
 
@@ -66,11 +88,6 @@ void findAverageTime(vector<Process> processes) {
 	cout<<"Average turn-around time = "<<average_turn_around_time<<"\n";
 }
 
-
-void sort_processes(vector<Process>& processes) {
-	sort(processes.begin(),processes.end(),less_than);
-}
-
 int main() {
 	int n,i=0;
 	float time, arrival_time_input;
@@ -92,7 +109,6 @@ int main() {
 		processes[i].priority = priority_input;
 		i++;
 	}
-	sort_processes(processes);
     findAverageTime(processes);
 	return 0;
 }
