@@ -13,6 +13,7 @@ void queueUpdation(int queue[],int timer,int arrival[],int n, int maxProccessInd
 	queue[zeroIndex] = maxProccessIndex + 1;
 }
 
+// updates queue after every preemption
 void queueMaintainence(int queue[], int n){
 	for(int i = 0; (i < n-1) && (queue[i+1] != 0) ; i++){
 		int temp = queue[i];
@@ -22,29 +23,28 @@ void queueMaintainence(int queue[], int n){
 }
 
 void checkNewArrival(int timer, int arrival[], int n, int maxProccessIndex,int queue[]){
-	if(timer <= arrival[n-1]){
-	bool newArrival = false;
-	for(int j = (maxProccessIndex+1); j < n; j++){
-			if(arrival[j] <= timer){
-			if(maxProccessIndex < j){
-				maxProccessIndex = j;
-				newArrival = true;
+	if(timer <= arrival[n-1]) {
+		bool newArrival = false;
+		for(int j = (maxProccessIndex+1); j < n; j++){
+				if(arrival[j] <= timer) {
+					if(maxProccessIndex < j){
+						maxProccessIndex = j;
+						newArrival = true;
+				}
 			}
 		}
-	}
-	//adds the incoming process to the ready queue
-	//(if any arrives)
-	if(newArrival)
-		queueUpdation(queue,timer,arrival,n, maxProccessIndex);
+
+		//adds any incoming process to the ready queue
+		if(newArrival)
+			queueUpdation(queue,timer,arrival,n, maxProccessIndex);
 	}
 }
 
-//Driver Code
 int main(){
-	int n,tq, timer = 0, maxProccessIndex = 0;
+	int n,quanta, timer = 0, maxProccessIndex = 0;
 	float avgWait = 0, avgTT = 0;
 	cout << "\nEnter the time quanta : ";
-	cin>>tq;
+	cin>>quanta;
 	cout << "\nEnter the number of processess : ";
 	cin>>n;
 	int arrival[n], burst[n], wait[n], turn[n], queue[n], temp_burst[n];
@@ -60,16 +60,17 @@ int main(){
 		temp_burst[i] = burst[i];
 	}
 
-	for(int i = 0; i < n; i++){ //Initializing the queue and complete array
+	for(int i = 0; i < n; i++){
 		complete[i] = false;
 		queue[i] = 0;
 	}
-	while(timer < arrival[0]) //Incrementing Timer until the first process arrives
+
+	while(timer < arrival[0])
 		timer++;
 	queue[0] = 1;
 	
 	while(true){
-		bool flag = true;
+		bool flag = true; // flag for exiting while loop once processes finish execution
 		for(int i = 0; i < n; i++){
 			if(temp_burst[i] != 0){
 				flag = false;
@@ -79,18 +80,21 @@ int main(){
 		if(flag)
 			break;
 
+		// (i < n) && (queue[i] != 0) : process is in the ready queue
 		for(int i = 0; (i < n) && (queue[i] != 0); i++){
 			int ctr = 0;
-			while((ctr < tq) && (temp_burst[queue[0]-1] > 0)){
+
+			// RRS: running processes for qunta time
+			while((ctr < quanta) && (temp_burst[queue[0]-1] > 0)){
 				temp_burst[queue[0]-1] -= 1;
 				timer += 1;
 				ctr++;
 
-				//Checking and Updating the ready queue untill all the processes arrive
+				//Checking and Updating the ready queue till all the processes arrive
 				checkNewArrival(timer, arrival, n, maxProccessIndex, queue);
 			}
-			//If a process is completed then store its exit time
-			//and mark it as completed
+
+			// check if process completed
 			if((temp_burst[queue[0]-1] == 0) && (complete[queue[0]-1] == false)){
 				//turn array currently stores the completion time
 				turn[queue[0]-1] = timer;	
