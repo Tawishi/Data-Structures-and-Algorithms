@@ -168,10 +168,10 @@ int main(){
 		Processes[i].wait = Processes[i].turn - Processes[i].burst;
 	}
 
-	cout << "\nProgram No.\tArrival Time\tBurst Time\tWait Time\tTurnAround Time"
+	cout << "\nProcess No.\tArrival Time\tBurst Time\tWait Time\tTurnAround Time"
 		<< endl;
 	for(int i = 0; i < n; i++){
-		cout<<i+1<<"\t\t"<<Processes[i].arrival<<"\t\t"
+		cout<<Processes[i].pid<<"\t\t"<<Processes[i].arrival<<"\t\t"
 		<<Processes[i].burst<<"\t\t"<<Processes[i].wait<<"\t\t"<<Processes[i].turn<<endl;
 	}
 	for(int i =0; i< n; i++){
